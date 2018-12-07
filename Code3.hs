@@ -21,6 +21,7 @@ type Fabric = Matrix String
 ex = "#1 @ 236,827: 24x17"
 
 ex2 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2"]
+ex22 = ["#1 @ 10,30: 40x40", "#2 @ 30,10: 40x40", "#3 @ 50,50: 20x20"]
 ex3 = ["#1 @ 1,3: 4x4", "#3 @ 5,5: 2x2"]
 
 ex4 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 5x5", "#3 @ 5,5: 2x2"]
@@ -28,7 +29,7 @@ ex4 = ["#1 @ 1,3: 4x4", "#2 @ 3,1: 5x5", "#3 @ 5,5: 2x2"]
 exClaim1 = Claim (Id "1") (1, 3) (4,4)
 exClaim3 = Claim (Id "3") (5, 5) (2,2)
 
-sizeEx = 8
+sizeEx = 80
 ------
 
 
@@ -36,8 +37,9 @@ main :: IO ()
 main = do
   contents <- readFile "input_3.txt"
   let c = lines contents
-  let claims = toClaims c
-  let markedFab = markClaims claims
+  let claims = toClaims ex22
+  let markedFab = markClaims 80 claims
+  putStrLn $ show markedFab
   putStrLn $ show (countSquareInches markedFab)
 
 
@@ -68,7 +70,7 @@ getRects str = (read x, read y)
 --- MARKING CLAIMS ON FABRIC (MATRIX STRING) ---
 
 initFabric :: Int ->  Fabric
-initFabric size = fromLists (List.replicate 1000 (List.replicate 1000 "."))
+initFabric size = fromLists (List.replicate size (List.replicate size "."))
 
 markFabric :: Claim -> Fabric -> Fabric
 markFabric (Claim (Id id) (c,r) (j,i)) fab = markFabric' id pos fab  -- use markFabric'
@@ -84,8 +86,8 @@ markFabric' id ((y,x):xs) fab = markFabric' id xs fab'
           "." -> setElem id (y,x) fab
           _   -> setElem "X" (y,x) fab
 
-markClaims :: [Claim] -> Fabric
-markClaims xs = List.foldr markFabric (initFabric sizeEx) xs
+markClaims :: Int -> [Claim] -> Fabric
+markClaims si xs = List.foldr markFabric (initFabric si) xs
 
 
 --- FINDING "X" LOCATIONS ---
