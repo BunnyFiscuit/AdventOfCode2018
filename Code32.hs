@@ -80,11 +80,12 @@ markFabric' :: String -> [(Int, Int)] -> Fabric -> Fabric
 markFabric' id [] fab = fab
 markFabric' id ( p@(c,r) : xs ) fab = markFabric' id xs fab'
   where fab' = case (Map.lookup p fab) of
-          Just _ -> markFabric' id xs (Map.insert p "X" fab)
-          Nothing -> markFabric' id xs (Map.insert p id fab)
+          Just _ -> (Map.insert p "X" fab)
+          Nothing -> (Map.insert p id fab)
 
 markClaims :: [Claim] -> Fabric -> Fabric
 markClaims [] fab = fab
 markClaims (c:cs) fab = markClaims cs fab'
   where fab' = markFabric c fab 
+
 
