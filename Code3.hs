@@ -73,8 +73,8 @@ initFabric :: Int ->  Fabric
 initFabric size = fromLists (List.replicate size (List.replicate size "."))
 
 markFabric :: Claim -> Fabric -> Fabric
-markFabric (Claim (Id id) (c,r) (j,i)) fab = markFabric' id pos fab  -- use markFabric'
-    where pos = [ (r + i', c + j') | j' <- [0..(j-1)], i' <- [0..(i-1)]]
+markFabric (Claim (Id id) (c,r) (w,h)) fab = markFabric' id pos fab  -- use markFabric'
+    where pos = [ (r + h', c + w') | w' <- [0..(w-1)], h' <- [0..(h-1)]]
 
 getPos :: Claim -> [(Int, Int)]
 getPos (Claim _ (r,c) (x,y)) = [ (r + x' , c + y') | x' <- [0..(x-1)], y' <- [0..(y-1)]]
